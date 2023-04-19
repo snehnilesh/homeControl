@@ -29,7 +29,7 @@
         </div>
         <div class="ultraThinMaterial bottom right weatherContainer">
             <h1>Weather</h1>
-            <h1 class="weatherMainText">9°</h1>
+            <h1 class="weatherMainText"></h1>
             <div class="weatherContents">
             </div>
         </div>
@@ -440,36 +440,114 @@
         var weatherContents = document.getElementsByClassName("weatherContents")[0];
         var weatherContentsHTML = "";
 
+        var latitude = 51.5074;
+        var longitude = 0.1278;
+
+        var weather = new XMLHttpRequest();
+        weather.open("GET", "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,visibility,windspeed_10m,uv_index&daily=temperature_2m_max,temperature_2m_min", true);
+
+        weather.open
+
+            var currentTime = new Date();
+            var currentYear = currentTime.getFullYear();
+            var currentMonth = currentTime.getMonth() + 1;
+            var currentDay = currentTime.getDate();
+            var currentHour = currentTime.getHours();
+            var currentMinute = currentTime.getMinutes();
+
+            if (currentMonth < 10) {
+                currentMonth = "0" + currentMonth;
+            }
+
+            if (currentDay < 10) {
+                currentDay = "0" + currentDay;
+            }
+
+            if (currentMinute >= 30) {
+                currentMinute = "00";
+                currentHour += 1;
+            } else {
+                currentMinute = "00";
+            }
+
+            var currentTimeFormatted = currentYear + "-" + currentMonth + "-" + currentDay + "T" + currentHour + ":" + currentMinute;
+
+        weather.onload = function() {
+            var weatherData = JSON.parse(weather.responseText);
+            console.log(weatherData);
+
+            var currentTimeIndex = weatherData.hourly.time.indexOf(currentTimeFormatted);
+
+            // round weatherData.hourly.temperature_2m[currentTimeIndex] to no decimal places 
+
+            var currentWeather = Math.round(weatherData.hourly.temperature_2m[currentTimeIndex]) + weatherData.hourly_units.temperature_2m;
+
+            var weatherMainText = document.getElementsByClassName("weatherMainText")[0];
+
+            weatherMainText.innerHTML = currentWeather;
+
+            var currentUVIndex = weatherData.hourly.uv_index[currentTimeIndex];
+            var currentFeelsLike = weatherData.hourly.apparent_temperature[currentTimeIndex];
+            var currentPrecipitation = weatherData.hourly.precipitation[currentTimeIndex];
+            var currentVisibility = weatherData.hourly.visibility[currentTimeIndex];
+            var currentWindSpeed = weatherData.hourly.windspeed_10m[currentTimeIndex];
+            var currentHumidity = weatherData.hourly.relativehumidity_2m[currentTimeIndex];
+            var maximumTemperature = weatherData.daily.temperature_2m_max[0];
+            var minimumTemperature = weatherData.daily.temperature_2m_min[0];
+
+            var currentUVIndexStatus = "";
+
+            if (currentUVIndex <= 2) {
+                currentUVIndexStatus = "Low";
+            } else if (currentUVIndex <= 5) {
+                currentUVIndexStatus = "Moderate";
+            } else if (currentUVIndex <= 7) {
+                currentUVIndexStatus = "High";
+            } else if (currentUVIndex <= 10) {
+                currentUVIndexStatus = "Very High";
+            } else {
+                currentUVIndexStatus = "Extreme";
+            }
+
         weatherContentsHTML += '<div class="horizontalSpaced2">';
-        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
-        weatherContentsHTML += '<h3 style="line-height: 1px;">UV Index</h3>';
-        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">0 - Low</h1>';
-        weatherContentsHTML += '</div>';
-        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
-        weatherContentsHTML += '<h3 style="line-height: 1px;">Air Pollution</h3>';
-        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">3 - Low</h1>';
-        weatherContentsHTML += '</div>';
-        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
-        weatherContentsHTML += '<h3 style="line-height: 1px;">Feels Like</h3>';
-        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">7°</h1>';
-        weatherContentsHTML += '</div>';
+            weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+            weatherContentsHTML += '<h3 style="line-height: 1px;">UV Index</h3>';
+            weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">' + Math.round(currentUVIndex) + " - " + currentUVIndexStatus + '</h1>';
+            weatherContentsHTML += '</div>';
+            
+            weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+            weatherContentsHTML += '<h3 style="line-height: 1px;">Feels Like</h3>';
+            weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">' + currentFeelsLike + weatherData.hourly_units.temperature_2m + '</h1>';
+            weatherContentsHTML += '</div>';
+
+            weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+            weatherContentsHTML += '<h3 style="line-height: 1px;">Maximum Temperature<h3>';
+            weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">' + maximumTemperature + weatherData.hourly_units.temperature_2m + '</h1>';
+            weatherContentsHTML += '</div>';
+
         weatherContentsHTML += '</div>';
         weatherContentsHTML += '<div class="horizontalSpaced2">';
-        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
-        weatherContentsHTML += '<h3 style="line-height: 1px;">Humidity</h3>';
-        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">80%</h1>';
-        weatherContentsHTML += '</div>';
-        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
-        weatherContentsHTML += '<h3 style="line-height: 1px;">Visibility</h3>';
-        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">13 mi</h1>';
-        weatherContentsHTML += '</div>';
-        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
-        weatherContentsHTML += '<h3 style="line-height: 1px;">Precipitation</h3>';
-        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">0 mm</h1>';
-        weatherContentsHTML += '</div>';
+            weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+            weatherContentsHTML += '<h3 style="line-height: 1px;">Humidity</h3>';
+            weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">' + currentHumidity + weatherData.hourly_units.relativehumidity_2m + '</h1>';
+            weatherContentsHTML += '</div>';
+
+            weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+            weatherContentsHTML += '<h3 style="line-height: 1px;">Precipitation</h3>';
+            weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">' + currentPrecipitation + weatherData.hourly_units.precipitation + '</h1>';
+            weatherContentsHTML += '</div>';
+
+            weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+            weatherContentsHTML += '<h3 style="line-height: 1px;">Minimum Temperature</h3>';
+            weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">' + minimumTemperature + weatherData.hourly_units.temperature_2m + '</h1>';
+            weatherContentsHTML += '</div>';
+
         weatherContentsHTML += '</div>';
 
         weatherContents.innerHTML = weatherContentsHTML;
+        }
+
+        weather.send();
 
         var mailContents = document.getElementsByClassName("mailContents")[0];
         var mailContentsHTML = "";
@@ -507,7 +585,8 @@
 
         setTimeout(function() {
             document.getElementsByClassName("welcomeScreen")[0].style.opacity = "0";
-        }, 1000);
+            document.getElementsByClassName("welcomeScreen")[0].style.display = "none"
+        }, 5000);        
 
     }
 </script>
