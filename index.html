@@ -40,8 +40,8 @@
             </div>
         </div> -->
 
-   <div class="thinMaterial2 mainFull">
-            <h1>Settings</h1>
+   <div class="thinMaterial2 mainFull center welcomeScreen">
+            <h1>Welcome</h1>
             <div class="settingsContents">
             </div>
         </div>
@@ -181,6 +181,14 @@
         align-items: center;
         justify-content: center;
         height: calc(100% - 12rem);
+    }
+    .center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .welcomeScreen {
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
     }
     .albumArt:nth-child(odd):hover {
         scale: 1.025;
@@ -362,7 +370,7 @@
         musicContentsHTML += '<img src="https://m.media-amazon.com/images/I/61rgnbku6hL._AC_SL1400_.jpg" class="albumArt" alt="3">';
 
         musicContents.innerHTML += musicContentsHTML;
-        
+
         var homeContents = document.getElementsByClassName("homeContents")[0];
         var homeContentsHTML = "";
 
@@ -496,6 +504,11 @@
         mailContentsHTML += '</div>';
 
         mailContents.innerHTML = mailContentsHTML;
+
+        // after 2 seconds hide the welcome screen
+        setTimeout(function() {
+            document.getElementsByClassName("welcomeScreen")[0].style.opacity = "0";
+        }, 2000);
 
     }
 </script>
