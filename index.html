@@ -444,7 +444,7 @@
         var longitude = 0.1278;
 
         var weather = new XMLHttpRequest();
-        weather.open("GET", "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,visibility,windspeed_10m,uv_index&daily=temperature_2m_max,temperature_2m_min", true);
+        weather.open("GET", "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,visibility,windspeed_10m,uv_index&daily=temperature_2m_max,temperature_2m_min&current_weather=true&timezone=auto", true);
 
         weather.open
 
@@ -492,8 +492,8 @@
             var currentVisibility = weatherData.hourly.visibility[currentTimeIndex];
             var currentWindSpeed = weatherData.hourly.windspeed_10m[currentTimeIndex];
             var currentHumidity = weatherData.hourly.relativehumidity_2m[currentTimeIndex];
-            var maximumTemperature = weatherData.daily.temperature_2m_max[0];
-            var minimumTemperature = weatherData.daily.temperature_2m_min[0];
+            var maximumTemperature = Math.round(weatherData.daily.temperature_2m_max[0]);
+            var minimumTemperature = Math.round(weatherData.daily.temperature_2m_min[0]);
 
             var currentUVIndexStatus = "";
 
@@ -512,7 +512,7 @@
         weatherContentsHTML += '<div class="horizontalSpaced2">';
             weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
             weatherContentsHTML += '<h3 style="line-height: 1px;">UV Index</h3>';
-            weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">' + Math.round(currentUVIndex) + " - " + currentUVIndexStatus + '</h1>';
+            weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">' + currentUVIndexStatus + '</h1>';
             weatherContentsHTML += '</div>';
             
             weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
@@ -521,7 +521,7 @@
             weatherContentsHTML += '</div>';
 
             weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
-            weatherContentsHTML += '<h3 style="line-height: 1px;">Maximum Temperature<h3>';
+            weatherContentsHTML += '<h3 style="line-height: 1px;">Maximum Temperature</h3>';
             weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">' + maximumTemperature + weatherData.hourly_units.temperature_2m + '</h1>';
             weatherContentsHTML += '</div>';
 
@@ -586,7 +586,7 @@
         setTimeout(function() {
             document.getElementsByClassName("welcomeScreen")[0].style.opacity = "0";
             document.getElementsByClassName("welcomeScreen")[0].style.display = "none"
-        }, 5000);        
+        }, 0000);        
 
     }
 </script>
