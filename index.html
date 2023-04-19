@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="ultraThinMaterial sideBarLeft">
+        <h1>Calendar</h1>
+    </div>
+
+    <div class="mainContainer">
+        <div class="ultraThinMaterial top left">
+            <h1>Mail</h1>
+            <div class="mailContents">
+            </div>
+        </div>
+        <div class="ultraThinMaterial top right">
+            <h1>Music</h1>
+            <div class="musicContents">
+            </div>
+        </div>
+        <div class="ultraThinMaterial bottom left homeContainer">
+            <h1>Home</h1>
+            <div class="homeContents">
+            </div>
+        </div>
+        <div class="ultraThinMaterial bottom right weatherContainer">
+            <h1>Weather</h1>
+            <h1 class="weatherMainText">9°</h1>
+            <div class="weatherContents">
+            </div>
+        </div>
+
+        <!-- <div class="thinMaterial2 main">
+            <h1>Music</h1>
+            <div class="m">
+            </div>
+        </div> -->
+    </div>
+</body>
+<style>
+    @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+    .ultraThinMaterial {
+        background: rgba(0,0,0,0.05);
+        border-radius: 32px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        z-index: 0;
+        overflow: hidden;
+    }
+    .ultraThinMaterial2 {
+        background: rgba(0,0,0,0.025);
+        border-radius: 24px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        z-index: 0;
+        overflow: hidden;
+    }
+    .thinMaterial2 {
+        background: rgba(0,0,0,0.05);
+        border-radius: 32px;
+        backdrop-filter: blur(80px);
+        -webkit-backdrop-filter: blur(80px);
+        z-index: 0;
+        overflow: hidden;
+    }
+    body {
+        margin: 1rem;
+        padding: 0;
+    }
+    html {
+        font-family: 'SF Pro Display', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: #242424;
+        background-color: white;
+    }
+    h1 {
+        font-weight: 600;
+        font-size: 40px;
+        line-height: 48px;
+        margin: 32px;
+        margin-top: 52px;
+    }
+    h2 {
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 24px;
+    }
+    h3 {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 16px;
+        opacity: 0.6;
+    }
+    .top {
+        width: calc((100% - 22.5% - 4rem) / 2);
+        height: calc(50% - 1.5rem);
+        position: fixed;
+        z-index: 1;
+    }
+    .bottom {
+        top: calc(50% + 0.5rem);
+        width: calc((100% - 22.5% - 4rem) / 2);
+        height: calc(50% - 1.5rem);
+        position: fixed;
+        z-index: 1;
+    }
+    .left {
+        left: calc(22.5% + 2rem)
+    }
+    .right {
+        right: 1rem;
+    }
+    .main {
+        width: calc(100% - 22.5% - 3rem);
+        height: calc(100% - 2rem);
+        position: fixed;
+        z-index: 1;
+        left: calc(22.5% + 2rem);
+        top: 1rem;
+    }
+    .horizontalSpaced {
+        display: flex;
+        justify-content: space-between;
+        height: 24px;
+    }
+    .horizontalSpaced2 {
+        display: flex;
+        margin-bottom: 16px;
+    }
+    .mainContainer {
+        width: calc(100% - 2rem - 22.5%);
+        left: calc(22.5% + 2rem);   
+        height: calc(100% - 2rem);
+        position: fixed;
+    }
+    .sideBarLeft {
+        width: 22.5%;
+        height: calc(100% - 2rem);
+        position: fixed;
+    }
+    .albumArt {
+        width: 25vh;
+        height: 25vh;
+        border-radius: 10%;
+        object-fit: cover;
+        position: relative;
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1)
+    }
+    .albumArt + .albumArt {
+        margin-left: 2.5rem;
+    }
+    .albumArt:nth-child(even) {
+        scale: 1.1;
+    }
+    .albumArt:nth-child(odd) {
+        opacity: 0.8;
+    }
+    .musicContents {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: calc(100% - 12rem);
+    }
+    .albumArt:nth-child(odd):hover {
+        scale: 1.025;
+        filter: blur(0.5px);
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+    }
+    .albumArt:nth-child(even):hover {
+        scale: 1.15;
+        filter: blur(0.5px);
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+    }
+    .calendarItem, .weatherItem, .homeItem, .mailItem {
+        scale: 1;
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+    }
+    .calendarItem:hover, .weatherItem:hover, .homeItem:hover, .mailItem:hover {
+        scale: 1.025;
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+    }
+    .weatherItem {
+        height: 8rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .weatherItem:nth-child(1) {
+        margin-left: 24px;
+    }
+    .weatherItem:nth-child(2) {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+    .weatherItem:nth-child(3) {
+        margin-right: 24px;
+    }
+    .weatherContents {
+        margin-bottom: 8px;
+    }
+    .weatherContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .weatherMainText {
+        font-size: 80px;
+        font-weight: 600;
+        line-height: 80px;
+    }
+    .homeItem {
+        width: 10.5vh;
+        height: 10.5vh;
+        margin-left: 1rem;
+    }
+    .homeItem:nth-child(1) {
+        margin-left: 0;
+    }
+    .homeItem:nth-child(5) {
+        margin-right: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .row {
+        display: flex;
+    }
+    .homeContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .homeContents {
+        margin-left: 2rem;
+        margin-right: 2rem;
+        margin-bottom: 2rem;
+    }
+    .homeContents h2 {
+        margin-top: 2.6rem;
+    }
+    .homeItemContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        margin-left: 12px;
+        margin-right: 12px;
+        margin-top: -16px;
+    }
+    .mailItem {
+        width: calc(100% - 5.5rem);
+        height: 7rem;
+        display: flex;
+        flex-direction: column;
+        margin-left: 24px;
+        margin-right: 24px;
+        margin-bottom: 16px;
+        height: 5rem;
+        padding: 16px 24px 16px 16px;
+    }
+    .mailContents {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .mailItemContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        margin-left: 12px;
+        margin-right: 12px;
+        margin-top: -16px;
+    }
+    @media (prefers-color-scheme: dark) {
+        .ultraThinMaterial {
+            background: rgba(255,255,255,0.05);
+        }
+        .ultraThinMaterial2 {
+            background: rgba(255,255,255,0.025);
+        }
+        body {
+            background: #000;
+        }
+        html {
+            color: #e5e5e5;
+            background: #000;
+        }
+        .albumArt:nth-child(odd) {
+            opacity: 0.5;
+        }
+    }
+
+</style>
+<script>
+    window.onload = function() {
+        var sidebarLeft = document.getElementsByClassName("sideBarLeft")[0];
+        var sidebarLeftHTML = "";
+
+        for (var i = 0; i < 9; i++) {
+
+            var lectureRooms = ["W-LT", "KLT1"]
+            var seminarRooms = ["CNWSR5"]
+            var pcRooms = ["OPC2", "COPC1", "CEPC2"]
+            var sessionTypes = ["Lecture", "Seminar", "PC"]
+            var sessionCodes = ["COMP3830", "COMP3230", "COMP3250", "COMP5200"]
+
+            var sessionType = sessionTypes[Math.floor(Math.random() * sessionTypes.length)];
+            var sessionCode = sessionCodes[Math.floor(Math.random() * sessionCodes.length)];
+
+            var room = "";
+            if (sessionType == "Lecture") {
+                room = lectureRooms[Math.floor(Math.random() * lectureRooms.length)];
+            } else if (sessionType == "Seminar") {
+                room = seminarRooms[Math.floor(Math.random() * seminarRooms.length)];
+            } else if (sessionType == "PC") {
+                room = pcRooms[Math.floor(Math.random() * pcRooms.length)];
+            }
+
+            var time = Math.floor(Math.random() * 10 + 8) + ":00";
+
+            sidebarLeftHTML += '<div class="ultraThinMaterial2 calendarItem" style="margin-left: 24px; margin-right:24px; margin-bottom:16px; height: 5rem; padding: 16px 24px 16px 16px;">';
+            sidebarLeftHTML += '<div class="horizontalSpaced">';
+            sidebarLeftHTML += '<h3>' + time + '</h3>';
+            sidebarLeftHTML += '<h3>' + room + '</h3>';
+            sidebarLeftHTML += '</div>';
+            sidebarLeftHTML += '<h2>' + sessionCode + ' ' + sessionType + '</h2>';
+            sidebarLeftHTML += '</div>';
+        }
+
+        sidebarLeft.innerHTML += sidebarLeftHTML;
+
+        var musicContents = document.getElementsByClassName("musicContents")[0];
+        var musicContentsHTML = "";
+
+        musicContentsHTML += '<img src="https://pbs.twimg.com/media/Cs47zArVYAAg5dS.jpg" class="albumArt" alt="1">';
+        musicContentsHTML += '<img src="https://i.scdn.co/image/ab67616d0000b273308f9319a3d6f6737f43b3fc" class="albumArt" alt="2">';
+        musicContentsHTML += '<img src="https://m.media-amazon.com/images/I/61rgnbku6hL._AC_SL1400_.jpg" class="albumArt" alt="3">';
+
+        musicContents.innerHTML += musicContentsHTML;
+                // <div class="row">
+                //     <div class="ultraThinMaterial2 homeItem">
+                //         <div class="homeItemContainer">
+                //             <h2>Front</h2>
+                //             <h3>HomePod</h3>
+                //         </div>
+                //     </div>
+                //     <div class="ultraThinMaterial2 homeItem">
+                //         <div class="homeItemContainer">
+                //             <h2>Back</h2>
+                //             <h3>HomePod</h3>
+                //         </div>
+                //     </div>
+                //     <div class="ultraThinMaterial2 homeItem">
+                //         <div class="homeItemContainer">
+                //             <h2>TV</h2>
+                //             <h3>Lightstrip</h3>
+                //         </div>
+                //     </div>
+                //     <div class="ultraThinMaterial2 homeItem">
+                //         <div class="homeItemContainer">
+                //             <h2>Main</h2>
+                //             <h3>Light</h3>
+                //         </div>
+                //     </div>
+                //     <div class="ultraThinMaterial2 homeItem">
+                //         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right-circle"><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                //     </div>
+                // </div>
+                // <h2>Sneh's Bedroom</h2>
+                // <div class="row">
+                //     <div class="ultraThinMaterial2 homeItem">
+                //         <div class="homeItemContainer">
+                //             <h2>Left</h2>
+                //             <h3>HomePod</h3>
+                //         </div>
+                //     </div>
+                //     <div class="ultraThinMaterial2 homeItem">
+                //         <div class="homeItemContainer">
+                //             <h2>Right</h2>
+                //             <h3>HomePod</h3>
+                //         </div>
+                //     </div>
+                //     <div class="ultraThinMaterial2 homeItem">
+                //         <div class="homeItemContainer">
+                //             <h2>Bed</h2>
+                //             <h3>Lightstrip</h3>
+                //         </div>
+                //     </div>
+                //     <div class="ultraThinMaterial2 homeItem">
+                //         <div class="homeItemContainer">
+                //             <h2>Main</h2>
+                //             <h3>Light</h3>
+                //         </div>
+                //     </div>
+                //     <div class="ultraThinMaterial2 homeItem">
+                //         <!-- right arrow with tail svg -->
+                //         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right-circle"><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                //     </div>
+                // </div> to homecontents
+
+        var homeContents = document.getElementsByClassName("homeContents")[0];
+        var homeContentsHTML = "";
+
+        homeContentsHTML += '<h2>Living Room</h2>';
+        homeContentsHTML += '<div class="row">';
+        homeContentsHTML += '<div class="ultraThinMaterial2 homeItem">';
+        homeContentsHTML += '<div class="homeItemContainer">';
+        homeContentsHTML += '<h2>Front</h2>';
+        homeContentsHTML += '<h3>HomePod</h3>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '<div class="ultraThinMaterial2 homeItem">';
+        homeContentsHTML += '<div class="homeItemContainer">';
+        homeContentsHTML += '<h2>Back</h2>';
+        homeContentsHTML += '<h3>HomePod</h3>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '<div class="ultraThinMaterial2 homeItem">';
+        homeContentsHTML += '<div class="homeItemContainer">';
+        homeContentsHTML += '<h2>TV</h2>';
+        homeContentsHTML += '<h3>Lightstrip</h3>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '<div class="ultraThinMaterial2 homeItem">';
+        homeContentsHTML += '<div class="homeItemContainer">';
+        homeContentsHTML += '<h2>Main</h2>';
+        homeContentsHTML += '<h3>Light</h3>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '<div class="ultraThinMaterial2 homeItem">';
+        homeContentsHTML += '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right-circle"><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '<h2>Sneh\'s Bedroom</h2>';
+        homeContentsHTML += '<div class="row">';
+        homeContentsHTML += '<div class="ultraThinMaterial2 homeItem">';
+        homeContentsHTML += '<div class="homeItemContainer">';
+        homeContentsHTML += '<h2>Left</h2>';
+        homeContentsHTML += '<h3>HomePod</h3>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '<div class="ultraThinMaterial2 homeItem">';
+        homeContentsHTML += '<div class="homeItemContainer">';
+        homeContentsHTML += '<h2>Right</h2>';
+        homeContentsHTML += '<h3>HomePod</h3>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '<div class="ultraThinMaterial2 homeItem">';
+        homeContentsHTML += '<div class="homeItemContainer">';
+        homeContentsHTML += '<h2>Bed</h2>';
+        homeContentsHTML += '<h3>Lightstrip</h3>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '<div class="ultraThinMaterial2 homeItem">';
+        homeContentsHTML += '<div class="homeItemContainer">';
+        homeContentsHTML += '<h2>Main</h2>';
+        homeContentsHTML += '<h3>Light</h3>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '<div class="ultraThinMaterial2 homeItem">';
+        homeContentsHTML += '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right-circle"><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>';
+        homeContentsHTML += '</div>';
+        homeContentsHTML += '</div>';
+
+        homeContents.innerHTML = homeContentsHTML;
+
+        var weatherContents = document.getElementsByClassName("weatherContents")[0];
+        var weatherContentsHTML = "";
+
+        weatherContentsHTML += '<div class="horizontalSpaced2">';
+        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+        weatherContentsHTML += '<h3 style="line-height: 1px;">UV Index</h3>';
+        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">0 - Low</h1>';
+        weatherContentsHTML += '</div>';
+        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+        weatherContentsHTML += '<h3 style="line-height: 1px;">Air Pollution</h3>';
+        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">3 - Low</h1>';
+        weatherContentsHTML += '</div>';
+        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+        weatherContentsHTML += '<h3 style="line-height: 1px;">Feels Like</h3>';
+        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">7°</h1>';
+        weatherContentsHTML += '</div>';
+        weatherContentsHTML += '</div>';
+        weatherContentsHTML += '<div class="horizontalSpaced2">';
+        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+        weatherContentsHTML += '<h3 style="line-height: 1px;">Humidity</h3>';
+        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">80%</h1>';
+        weatherContentsHTML += '</div>';
+        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+        weatherContentsHTML += '<h3 style="line-height: 1px;">Visibility</h3>';
+        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">13 mi</h1>';
+        weatherContentsHTML += '</div>';
+        weatherContentsHTML += '<div class="ultraThinMaterial2 weatherItem">';
+        weatherContentsHTML += '<h3 style="line-height: 1px;">Precipitation</h3>';
+        weatherContentsHTML += '<h1 style="line-height: 1px; margin-top: 2rem;">0 mm</h1>';
+        weatherContentsHTML += '</div>';
+        weatherContentsHTML += '</div>';
+
+        weatherContents.innerHTML = weatherContentsHTML;
+
+        var mailContents = document.getElementsByClassName("mailContents")[0];
+        var mailContentsHTML = "";
+
+        mailContentsHTML += '<div class="ultraThinMaterial2 mailItem" style="margin-left: 24px; margin-right:24px; margin-bottom:16px; height: 5rem; padding: 16px 24px 16px 16px;">';
+        mailContentsHTML += '<div class="horizontalSpaced">';
+        mailContentsHTML += '<h3>Dribbble</h3>';
+        mailContentsHTML += '<h3>14:57</h3>';
+        mailContentsHTML += '</div>';
+        mailContentsHTML += '<h2>Showcase your design skills</h2>';
+        mailContentsHTML += '</div>';
+        mailContentsHTML += '<div class="ultraThinMaterial2 mailItem" style="margin-left: 24px; margin-right:24px; margin-bottom:16px; height: 5rem; padding: 16px 24px 16px 16px;">';
+        mailContentsHTML += '<div class="horizontalSpaced">';
+        mailContentsHTML += '<h3>Apple Developer</h3>';
+        mailContentsHTML += '<h3>15:02</h3>';
+        mailContentsHTML += '</div>';
+        mailContentsHTML += '<h2>App Store Guideline updates now available</h2>';
+        mailContentsHTML += '</div>';
+        mailContentsHTML += '<div class="ultraThinMaterial2 mailItem" style="margin-left: 24px; margin-right:24px; margin-bottom:16px; height: 5rem; padding: 16px 24px 16px 16px;">';
+        mailContentsHTML += '<div class="horizontalSpaced">';
+        mailContentsHTML += '<h3>Chase Servicing</h3>';
+        mailContentsHTML += '<h3>15:39</h3>';
+        mailContentsHTML += '</div>';
+        mailContentsHTML += '<h2>Monthly statement ready to view</h2>';
+        mailContentsHTML += '</div>';
+        mailContentsHTML += '<div class="ultraThinMaterial2 mailItem" style="margin-left: 24px; margin-right:24px; margin-bottom:16px; height: 5rem; padding: 16px 24px 16px 16px;">';
+        mailContentsHTML += '<div class="horizontalSpaced">';
+        mailContentsHTML += '<h3>Google</h3>';
+        mailContentsHTML += '<h3>16:05</h3>';
+        mailContentsHTML += '</div>';
+        mailContentsHTML += '<h2>Google Pay: Send money to friends and family</h2>';
+        mailContentsHTML += '</div>';
+
+        mailContents.innerHTML = mailContentsHTML;
+
+    }
+</script>
+</html>
