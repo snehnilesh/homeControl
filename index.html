@@ -487,7 +487,7 @@
             weatherMainText.innerHTML = currentWeather;
 
             var currentUVIndex = weatherData.hourly.uv_index[currentTimeIndex];
-            var currentFeelsLike = weatherData.hourly.apparent_temperature[currentTimeIndex];
+            var currentFeelsLike = Math.round(weatherData.hourly.apparent_temperature[currentTimeIndex]);
             var currentPrecipitation = weatherData.hourly.precipitation[currentTimeIndex];
             var currentVisibility = weatherData.hourly.visibility[currentTimeIndex];
             var currentWindSpeed = weatherData.hourly.windspeed_10m[currentTimeIndex];
